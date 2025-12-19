@@ -36,6 +36,9 @@ export async function POST(request: Request) {
                 purchaseDate: new Date(body.purchaseDate),
                 description: body.description || null,
                 imageUrl: body.imageUrl || null,
+                buyer: body.buyer || null,
+                notaryRecordNo: body.notaryRecordNo || null,
+                invoiceAmount: body.invoiceAmount ? parseFloat(body.invoiceAmount) : null,
             },
         });
 

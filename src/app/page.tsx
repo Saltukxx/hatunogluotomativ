@@ -129,9 +129,20 @@ const categoryLabels: Record<string, string> = {
   VERGI: 'Vergi',
   NOTER: 'Noter',
   KOMISYON: 'Komisyon',
+  KASA: 'Kasa',
+  SIGORTA: 'Sigorta',
+  SOFOR_UCRETI: 'Şoför Ücreti',
+  YEMEK: 'Yemek',
+  KONAKLAMA: 'Konaklama',
   KASA_GIRISI: 'Kasa Girişi',
   KASA_CIKISI: 'Kasa Çıkışı',
   DIGER: 'Diğer',
+};
+
+const buyerLabels: Record<string, string> = {
+  MACIT_HATUNOGLU: 'Macit Hatunoğlu',
+  MUSTAFA_KEMAL_HATUNOGLU: 'Mustafa Kemal Hatunoğlu',
+  MELIH_OZPEKER: 'Melih Özpeker',
 };
 
 export default function Dashboard() {
@@ -160,6 +171,9 @@ export default function Dashboard() {
     purchasePrice: '',
     purchaseDate: new Date().toISOString().split('T')[0],
     description: '',
+    buyer: '',
+    notaryRecordNo: '',
+    invoiceAmount: '',
   });
 
   const [expenseForm, setExpenseForm] = useState({
@@ -226,6 +240,9 @@ export default function Dashboard() {
         purchasePrice: '',
         purchaseDate: new Date().toISOString().split('T')[0],
         description: '',
+        buyer: '',
+        notaryRecordNo: '',
+        invoiceAmount: '',
       });
       fetchData();
     } catch (error) {
@@ -480,6 +497,11 @@ export default function Dashboard() {
                           <SelectItem value="VERGI" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Vergi</SelectItem>
                           <SelectItem value="NOTER" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Noter</SelectItem>
                           <SelectItem value="KOMISYON" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Komisyon</SelectItem>
+                          <SelectItem value="KASA" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Kasa</SelectItem>
+                          <SelectItem value="SIGORTA" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Sigorta</SelectItem>
+                          <SelectItem value="SOFOR_UCRETI" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Şoför Ücreti</SelectItem>
+                          <SelectItem value="YEMEK" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Yemek</SelectItem>
+                          <SelectItem value="KONAKLAMA" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Konaklama</SelectItem>
                           <SelectItem value="DIGER" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Diğer</SelectItem>
                         </SelectContent>
                       </Select>
@@ -629,6 +651,44 @@ export default function Dashboard() {
                         placeholder="Araç hakkında notlar..."
                         className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
                       />
+                    </div>
+                    <div>
+                      <Label className="text-zinc-300">Alıcı</Label>
+                      <Select
+                        value={vehicleForm.buyer || 'none'}
+                        onValueChange={(value) => setVehicleForm({ ...vehicleForm, buyer: value === 'none' ? '' : value })}
+                      >
+                        <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
+                          <SelectValue placeholder="Alıcı seçin..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-zinc-800 border-zinc-700">
+                          <SelectItem value="none" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Seçilmedi</SelectItem>
+                          <SelectItem value="MACIT_HATUNOGLU" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Macit Hatunoğlu</SelectItem>
+                          <SelectItem value="MUSTAFA_KEMAL_HATUNOGLU" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Mustafa Kemal Hatunoğlu</SelectItem>
+                          <SelectItem value="MELIH_OZPEKER" className="text-white hover:bg-zinc-700 focus:bg-zinc-700">Melih Özpeker</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-zinc-300">Noter Yevmiye No</Label>
+                        <Input
+                          value={vehicleForm.notaryRecordNo}
+                          onChange={(e) => setVehicleForm({ ...vehicleForm, notaryRecordNo: e.target.value })}
+                          placeholder="2024/12345"
+                          className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-zinc-300">Fatura Tutarı (₺)</Label>
+                        <Input
+                          type="number"
+                          value={vehicleForm.invoiceAmount}
+                          onChange={(e) => setVehicleForm({ ...vehicleForm, invoiceAmount: e.target.value })}
+                          placeholder="450000"
+                          className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                        />
+                      </div>
                     </div>
                     <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                       Araç Ekle

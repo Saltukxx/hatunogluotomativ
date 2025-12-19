@@ -26,6 +26,11 @@ model Vehicle {
   saleDate      DateTime? // Satış Tarihi
   description   String?  // Açıklama / Notlar
   imageUrl      String?  // Görsel URL
+  
+  // Yeni alanlar
+  buyer         String?  // Alıcı: MACIT_HATUNOGLU, MUSTAFA_KEMAL_HATUNOGLU, MELIH_OZPEKER
+  notaryRecordNo String? // Noter Yevmiye No
+  invoiceAmount Float?   // Fatura Tutarı
 
   transactions Transaction[]
 
@@ -37,7 +42,7 @@ model Vehicle {
 model Transaction {
   id          String   @id @default(uuid())
   type        String   // GELIR, GIDER
-  category    String   // ARAC_SATISI, ARAC_ALISI, BAKIM, VERGI, NOTER, KOMISYON, DIGER
+  category    String   // ARAC_SATISI, ARAC_ALISI, BAKIM, VERGI, NOTER, KOMISYON, KASA, SIGORTA, SOFOR_UCRETI, YEMEK, KONAKLAMA, KASA_GIRISI, KASA_CIKISI, DIGER
   amount      Float    // Tutar
   date        DateTime // Tarih
   description String?  // Açıklama

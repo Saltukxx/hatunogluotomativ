@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Araç Modeli
+model Vehicle {
+  id            String   @id @default(uuid())
+  make          String   // Marka (ör: BMW)
+  model         String   // Model (ör: 320i)
+  year          Int      // Yıl
+  package       String?  // Paket/Donanım (ör: M Sport)
+  vin           String?  @unique // Şasi No
+  plate         String?  // Plaka
+  status        String   @default("STOKTA") // STOKTA, SATILDI, REZERVE
+  purchasePrice Float    // Alış Fiyatı
+  purchaseDate  DateTime // Alış Tarihi
+  sellingPrice  Float?   // Satış Fiyatı
+  saleDate      DateTime? // Satış Tarihi
+  description   String?  // Açıklama / Notlar
+  imageUrl      String?  // Görsel URL
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// İşlem Modeli (Gelir/Gider)
+model Transaction {
+  id          String   @id @default(uuid())
+  type        String   // GELIR, GIDER
+  category    String   // ARAC_SATISI, ARAC_ALISI, BAKIM, VERGI, NOTER, KOMISYON, DIGER
+  amount      Float    // Tutar
+  date        DateTime // Tarih
+  description String?  // Açıklama
+
+  vehicleId String?
+  vehicle   Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Kasa Ayarları (Başlangıç bakiyesi vb.)
+model Settings {
+  id              String @id @default("singleton")
+  initialBalance  Float  @default(0) // Başlangıç kasası
+  vatRate         Float  @default(20) // KDV oranı (%)
+  incomeTaxRate   Float  @default(15) // Gelir vergisi oranı (%)
+}

@@ -1,0 +1,38 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: hatunoglu-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hatunoglu
+      POSTGRES_PASSWORD: hatunoglu123
+      POSTGRES_DB: hatunoglu_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U hatunoglu -d hatunoglu_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hatunoglu-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://hatunoglu:hatunoglu123@db:5432/hatunoglu_db
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

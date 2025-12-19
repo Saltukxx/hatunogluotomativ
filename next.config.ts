@@ -1,10 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Disable Turbopack due to Prisma compatibility issues
-  experimental: {
-    // Turbopack can be explicitly disabled if needed
-  },
+  // Enable standalone output for Docker
+  output: "standalone",
+
   // Configure webpack for Prisma
   webpack: (config, { isServer }) => {
     if (isServer) {

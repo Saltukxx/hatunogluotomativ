@@ -4,13 +4,8 @@ const nextConfig: NextConfig = {
   // Enable standalone output for Docker
   output: "standalone",
 
-  // Configure webpack for Prisma
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals.push('@prisma/client');
-    }
-    return config;
-  },
+  // Empty turbopack config to silence the Turbopack/webpack conflict error
+  turbopack: {},
 };
 
 export default nextConfig;
